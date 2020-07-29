@@ -9,6 +9,7 @@
     <Compile Include="Endpoints/Cart/Cart.fs" />
     <Compile Include="Endpoints/Cart/CartHttp.fs" />
     <Compile Include="Endpoints/Cart/CartMongoDB.fs" />
+    <Compile Include="Endpoints/Cart/CartSQLite.fs" />
     <Compile Include="Main.fs" />
   </ItemGroup>
 
