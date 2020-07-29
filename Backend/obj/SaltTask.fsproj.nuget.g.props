@@ -14,5 +14,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <PkgFSharp_Core Condition=" '$(PkgFSharp_Core)' == '' ">/Users/dayangraham/.nuget/packages/fsharp.core/4.7.1</PkgFSharp_Core>
+    <PkgMongoDB_Driver Condition=" '$(PkgMongoDB_Driver)' == '' ">/Users/dayangraham/.nuget/packages/mongodb.driver/2.10.4</PkgMongoDB_Driver>
+    <PkgGiraffe Condition=" '$(PkgGiraffe)' == '' ">/Users/dayangraham/.nuget/packages/giraffe/4.1.0</PkgGiraffe>
   </PropertyGroup>
 </Project>

@@ -35,6 +35,16 @@
               "target": "Package",
               "version": "[4.7.1, )",
               "generatePathProperty": true
+            },
+            "Giraffe": {
+              "target": "Package",
+              "version": "[4.1.0, )",
+              "generatePathProperty": true
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.10.4, )",
+              "generatePathProperty": true
             }
           },
           "imports": [

@@ -50,3 +50,14 @@
 /Users/dayangraham/Projects/SaltTask/Backend/obj/Debug/netcoreapp3.1/SaltTask.dll
 /Users/dayangraham/Projects/SaltTask/Backend/obj/Debug/netcoreapp3.1/SaltTask.pdb
 /Users/dayangraham/Projects/SaltTask/Backend/obj/Debug/netcoreapp3.1/SaltTask.genruntimeconfig.cache
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/DnsClient.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/Giraffe.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/Microsoft.IO.RecyclableMemoryStream.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/MongoDB.Bson.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/MongoDB.Driver.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/MongoDB.Driver.Core.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/MongoDB.Libmongocrypt.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/SharpCompress.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/TaskBuilder.fs.dll
+/Users/dayangraham/Projects/SaltTask/Backend/bin/Debug/netcoreapp3.1/Utf8Json.dll
