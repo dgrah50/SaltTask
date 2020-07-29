@@ -5,13 +5,13 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Giraffe
-open Cart
-open Cart.Http
-open Cart.CartMongoDB
+open Product
+open Product.Http
+open Product.ProductMongoDB
 
 let routes =
   choose [
-    CartHttp.handlers ]
+    ProductHttp.handlers ]
 
 let configureApp (app : IApplicationBuilder) =
   app.UseGiraffe routes
@@ -19,10 +19,10 @@ let configureApp (app : IApplicationBuilder) =
 
 let configureServices (services : IServiceCollection) =
   let mongo = MongoClient (Environment.GetEnvironmentVariable "MONGO_URL")
-  let db = mongo.GetDatabase "cart"
+  let db = mongo.GetDatabase "product"
 
   services.AddGiraffe() |> ignore
-  services.AddCartMongoDB(db.GetCollection<Cart>("cart")) |> ignore
+  services.AddProductMongoDB(db.GetCollection<Product>("product")) |> ignore
 
 [<EntryPoint>]
 let main _ =
