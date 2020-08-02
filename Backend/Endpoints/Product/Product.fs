@@ -1,9 +1,18 @@
 namespace Product
 
+open MongoDB.Bson
+
+[<CLIMutable>]
 type Product =
-  { Id: string
-    Text: string
-    Done: bool
+  { _id: BsonObjectId
+    code: string
+    url: string
+    creator: string
+    created_t: string
+    last_modified_t: string
+    product_name: string
+    generic_name: string
+    quantity: string
   }
 
 type ProductSave = Product -> Product

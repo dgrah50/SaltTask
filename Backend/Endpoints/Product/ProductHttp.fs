@@ -5,6 +5,7 @@ open Microsoft.AspNetCore.Http
 open Product
 open FSharp.Control.Tasks.V2
 open System 
+open MongoDB.Bson
 
 module ProductHttp =
   let handlers : HttpFunc -> HttpContext -> HttpFuncResult =
@@ -15,7 +16,7 @@ module ProductHttp =
           task {
             let save = context.GetService<ProductSave>()
             let! product = context.BindJsonAsync<Product>()
-            let product = { product with Id = ShortGuid.fromGuid(Guid.NewGuid()) }
+            let product = { product with _id = BsonObjectId(ObjectId.GenerateNewId()) }
             return! json (save product) next context
           }
        // Read
@@ -30,7 +31,8 @@ module ProductHttp =
           task {
             let save = context.GetService<ProductSave>()
             let! product = context.BindJsonAsync<Product>()
-            let product = { product with Id = id }
+            // let product = { product with Id = id }
+            let product = { product with _id = BsonObjectId(ObjectId.GenerateNewId()) }
             return! json (save product) next context
           })
       // Delete
