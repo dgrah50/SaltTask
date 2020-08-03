@@ -6,8 +6,9 @@ open MongoDB.Bson
 open Microsoft.Extensions.DependencyInjection
 
 let find (collection : IMongoCollection<Product>) (criteria : ProductCriteria) : Product[] =
-  match criteria with
-  | ProductCriteria.All -> collection.Find(Builders.Filter.Empty).ToEnumerable() |> Seq.toArray
+  // match criteria with
+  // | ProductCriteria.All -> 
+  collection.Find(Builders.Filter.Empty).ToEnumerable() |> Seq.toArray
 
 let save (collection : IMongoCollection<Product>) (product : Product) : Product =
   let products = collection.Find(fun x -> x._id = product._id).ToEnumerable()

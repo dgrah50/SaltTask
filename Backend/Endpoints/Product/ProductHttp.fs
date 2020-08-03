@@ -22,9 +22,14 @@ module ProductHttp =
        // Read
       GET >=> route "/products" >=>
         fun next context ->
-          let find = context.GetService<ProductFind>()
-          let products = find ProductCriteria.All
-          json products next context
+          task {
+            let find = context.GetService<ProductFind>()
+            let! query = context.BindJsonAsync<ProductCriteria>()
+            printfn "%A" query
+            let products = find query
+            return! json products next context
+          }
+
       // Update
       PUT >=> routef "/products/%s" (fun id ->
         fun next context ->

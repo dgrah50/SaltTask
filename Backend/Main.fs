@@ -25,8 +25,6 @@ let errorHandler (ex : Exception) (logger : ILogger) =
     logger.LogError(EventId(), ex, "An unhandled exception occurred while executing the request.")
     clearResponse >=> setStatusCode 500 >=> text ex.Message
 
-
-
 let configureApp (app : IApplicationBuilder) =
   app.UseGiraffeErrorHandler errorHandler  |> ignore
   app.UseStaticFiles() |> ignore
@@ -38,7 +36,6 @@ let configureServices (services : IServiceCollection) =
   let pack = ConventionPack()
   pack.Add(IgnoreExtraElementsConvention(true))
   ConventionRegistry.Register("Ignore extras",pack, (fun _ -> true))
-
   services.AddGiraffe() |> ignore
   services.AddProductMongoDB(db.GetCollection<Product>("products")) |> ignore
   

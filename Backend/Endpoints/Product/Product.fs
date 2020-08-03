@@ -4,7 +4,8 @@ open MongoDB.Bson
 
 [<CLIMutable>]
 type Product =
-  { _id: BsonObjectId
+  { 
+    _id: BsonObjectId
     code: string
     url: string
     creator: string
@@ -17,8 +18,14 @@ type Product =
 
 type ProductSave = Product -> Product
 
+// type ProductCriteria =
+//   | All
+
 type ProductCriteria =
-  | All
+  {
+    query: string
+    page: int
+  }
 
 type ProductFind = ProductCriteria -> Product[]
 
