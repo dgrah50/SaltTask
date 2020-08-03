@@ -24,6 +24,7 @@ type ProductSave = Product -> Product
 type ProductCriteria =
   {
     query: string
+    field: string
     page: int
   }
 

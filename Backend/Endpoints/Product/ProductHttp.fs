@@ -25,7 +25,6 @@ module ProductHttp =
           task {
             let find = context.GetService<ProductFind>()
             let! query = context.BindJsonAsync<ProductCriteria>()
-            printfn "%A" query
             let products = find query
             return! json products next context
           }

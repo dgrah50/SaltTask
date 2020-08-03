@@ -16,7 +16,6 @@ let routes =
   choose [
     ProductHttp.handlers ]
 
-
 // ---------------------------------
 // Error handler
 // ---------------------------------
