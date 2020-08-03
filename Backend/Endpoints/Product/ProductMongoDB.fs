@@ -6,8 +6,8 @@ open MongoDB.Bson
 open Microsoft.Extensions.DependencyInjection
 
 let find (collection : IMongoCollection<Product>) (criteria : ProductCriteria) : Product[] =
-  printfn "in match:"
-  printfn "%A" criteria
+
+  // Is  there a  cleaner way to do this like template literals in JS ? 
   match (criteria.field, criteria.query) with 
   | (null, _) -> 
     collection.Find(Builders.Filter.Empty).ToEnumerable() |> Seq.toArray
@@ -15,24 +15,24 @@ let find (collection : IMongoCollection<Product>) (criteria : ProductCriteria) :
     collection.Find(Builders.Filter.Empty).ToEnumerable() |> Seq.toArray
   | (field, matchstring) ->
     match field with 
-    | "id" ->
+    | "_id" ->
       collection.Find(fun x -> x._id = BsonObjectId(matchstring) ).ToEnumerable() |> Seq.toArray
     | "code" ->
-      collection.Find(fun x -> x.code = matchstring).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x.code.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "url" ->
-      collection.Find(fun x -> x.url = matchstring).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x.url.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "creator" ->
-      collection.Find(fun x -> x.creator = matchstring).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x.creator.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "created_t" ->
-      collection.Find(fun x -> x.created_t = matchstring).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x.created_t.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "last_modified_t" ->
-      collection.Find(fun x -> x.last_modified_t = matchstring).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x.last_modified_t.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "product_name" ->
-      collection.Find(fun x -> x.product_name = matchstring).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x.product_name.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "generic_name" ->
-      collection.Find(fun x -> x.generic_name = matchstring).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x.generic_name.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "quantity" ->
-      collection.Find(fun x -> x.quantity = matchstring).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x.quantity.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | _ ->
       collection.Find(Builders.Filter.Empty).ToEnumerable() |> Seq.toArray
 
