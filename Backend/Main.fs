@@ -10,11 +10,16 @@ open Giraffe
 open Product
 open Product.Http
 open Product.ProductMongoDB
+open Cart
+open Cart.Http
+open Cart.CartMongoDB
 open MongoDB.Bson.Serialization.Conventions
 
 let routes =
   choose [
-    ProductHttp.handlers ]
+    ProductHttp.handlers
+    CartHttp.handlers
+    ]
 
 // ---------------------------------
 // Error handler
@@ -37,6 +42,7 @@ let configureServices (services : IServiceCollection) =
   ConventionRegistry.Register("Ignore extras",pack, (fun _ -> true))
   services.AddGiraffe() |> ignore
   services.AddProductMongoDB(db.GetCollection<Product>("products")) |> ignore
+  services.AddCartMongoDB(db.GetCollection<Product>("cart")) |> ignore
   
 
 [<EntryPoint>]

@@ -1,16 +1,13 @@
 namespace Cart
+open Product
 
-type Cart =
-  { Id: string
-    Text: string
-    Done: bool
-  }
 
-type CartSave = Cart -> Cart
+type CartSave = Product -> Product
+
 
 type CartCriteria =
   | All
 
-type CartFind = CartCriteria -> Cart[]
+type CartFind = CartCriteria -> Product[]
 
 type CartDelete = string -> bool

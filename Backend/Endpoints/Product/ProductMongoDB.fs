@@ -7,7 +7,7 @@ open Microsoft.Extensions.DependencyInjection
 
 let find (collection : IMongoCollection<Product>) (criteria : ProductCriteria) : Product[] =
 
-  // Is  there a  cleaner way to do this like template literals in JS ? 
+  // Is  there a  cleaner way to do this like template literals in JS ?
   match (criteria.field, criteria.query) with 
   | (null, _) -> 
     collection.Find(Builders.Filter.Empty).ToEnumerable() |> Seq.toArray
