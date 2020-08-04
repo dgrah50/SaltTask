@@ -1,7 +1,6 @@
 ﻿
 open System
 open MongoDB.Driver
-open MongoDB.Bson
 open MongoDB.Bson.Serialization.Conventions
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
@@ -21,10 +20,6 @@ let routes =
     CartHttp.handlers
     ]
 
-// ---------------------------------
-// Error handler
-// ---------------------------------
-
 let errorHandler (ex : Exception) (logger : ILogger) =
     logger.LogError(EventId(), ex, "An unhandled exception occurred while executing the request.")
     clearResponse >=> setStatusCode 500 >=> text ex.Message
@@ -35,17 +30,24 @@ let configureApp (app : IApplicationBuilder) =
   app.UseGiraffe routes
 
 let configureServices (services : IServiceCollection) =
+  // Connect to database, ensure that the mongoDB URL has been exported as an environment variable
   let mongo = MongoClient (Environment.GetEnvironmentVariable "MONGO_URL")
   let db = mongo.GetDatabase "products"
+
+  // These next 3 lines are required to ignore the extra product fields 
+  // that are not loaded from the database into the defined Product type
   let pack = ConventionPack()
   pack.Add(IgnoreExtraElementsConvention(true))
   ConventionRegistry.Register("Ignore extras",pack, (fun _ -> true))
+
+  // Configure the services to share the products and cart databases as a single source of truth
   services.AddGiraffe() |> ignore
   services.AddProductMongoDB(db.GetCollection<Product>("products")) |> ignore
   services.AddCartMongoDB(db.GetCollection<CartItem>("cart")) |> ignore
   
 
 [<EntryPoint>]
+// Kickstart the server
 let main _ =
   WebHostBuilder()
     .UseKestrel()
