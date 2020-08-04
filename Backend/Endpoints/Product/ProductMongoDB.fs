@@ -16,7 +16,8 @@ let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Pr
     // matchstring: the string to search the field for.
 
     // Is  there a  cleaner way to do this like template literals in JS ?
-    //  Violates "Do Not Repeat Yourself"
+    // Violates "Do Not Repeat Yourself"
+    // Ideally would do something like x.[field].Contains(matchstring)
     | (field, matchstring) ->
         match field with
         | "_id" ->
