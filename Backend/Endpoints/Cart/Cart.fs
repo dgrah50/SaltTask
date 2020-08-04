@@ -2,12 +2,18 @@ namespace Cart
 open Product
 
 
-type CartSave = Product -> Product
+[<CLIMutable>]
+type CartItem = {
+  _id: string
+  cartquantity: int
+  product: Product
+}
 
+type CartSave = CartItem -> CartItem
 
 type CartCriteria =
   | All
 
-type CartFind = CartCriteria -> Product[]
+type CartFind = CartCriteria -> CartItem[]
 
 type CartDelete = string -> bool

@@ -16,7 +16,7 @@ let find (collection : IMongoCollection<Product>) (criteria : ProductCriteria) :
   | (field, matchstring) ->
     match field with 
     | "_id" ->
-      collection.Find(fun x -> x._id = BsonObjectId(matchstring) ).ToEnumerable() |> Seq.toArray
+      collection.Find(fun x -> x._id.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "code" ->
       collection.Find(fun x -> x.code.Contains(matchstring)).ToEnumerable() |> Seq.toArray
     | "url" ->
@@ -54,7 +54,7 @@ let save (collection : IMongoCollection<Product>) (product : Product) : Product 
 let delete (collection : IMongoCollection<Product>) (id : string) : bool =
   collection.DeleteOne(Builders<Product>
     .Filter
-    .Eq((fun x -> x._id.AsString), id))
+    .Eq((fun x -> x._id), id))
     .DeletedCount > 0L
 
 

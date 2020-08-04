@@ -17,8 +17,12 @@ module CartHttp =
           task {
             let save = context.GetService<CartSave>()
             let! product = context.BindJsonAsync<Product>()
-            let product = { product with _id = BsonObjectId(ObjectId.GenerateNewId()) }
-            return! json (save product) next context
+            let cartitem = { 
+              _id = product._id.ToString();
+              cartquantity = 1;
+              product = product;
+             }
+            return! json (save cartitem) next context
           }
        // Read
       GET >=> route "/cart" >=>
@@ -27,15 +31,20 @@ module CartHttp =
           let carts = find CartCriteria.All
           json carts next context
       // Update 
-      //  TODO: Update to be the same as the POST endpoint 
-      // PUT >=> routef "/cart/%s" (fun id ->
-      //   fun next context ->
-      //     task {
-      //       let save = context.GetService<CartSave>()
-      //       let! cart = context.BindJsonAsync<Cart>()
-      //       let cart = { cart with Id = id }
-      //       return! json (save cart) next context
-      //     })
+      //  TODO: Update to fix submit with ID issue 
+      PUT >=> route "/cart" >=>
+        fun next context ->
+          task {
+            let save = context.GetService<CartSave>()
+            let! product = context.BindJsonAsync<Product>()
+            let cartitem = { 
+              _id = product._id.ToString();
+              cartquantity = 1;
+              product = product;
+             }
+            return! json (save cartitem) next context
+          }
+       // Read
       // Delete
       DELETE >=> routef "/cart/%s" (fun id ->
         fun next context ->

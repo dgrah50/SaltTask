@@ -2,6 +2,7 @@
 open System
 open MongoDB.Driver
 open MongoDB.Bson
+open MongoDB.Bson.Serialization.Conventions
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.DependencyInjection
@@ -13,7 +14,6 @@ open Product.ProductMongoDB
 open Cart
 open Cart.Http
 open Cart.CartMongoDB
-open MongoDB.Bson.Serialization.Conventions
 
 let routes =
   choose [
@@ -42,7 +42,7 @@ let configureServices (services : IServiceCollection) =
   ConventionRegistry.Register("Ignore extras",pack, (fun _ -> true))
   services.AddGiraffe() |> ignore
   services.AddProductMongoDB(db.GetCollection<Product>("products")) |> ignore
-  services.AddCartMongoDB(db.GetCollection<Product>("cart")) |> ignore
+  services.AddCartMongoDB(db.GetCollection<CartItem>("cart")) |> ignore
   
 
 [<EntryPoint>]

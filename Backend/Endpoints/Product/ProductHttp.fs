@@ -16,7 +16,7 @@ module ProductHttp =
           task {
             let save = context.GetService<ProductSave>()
             let! product = context.BindJsonAsync<Product>()
-            let product = { product with _id = BsonObjectId(ObjectId.GenerateNewId()) }
+            let product = { product with _id = ObjectId.GenerateNewId().ToString() }
             return! json (save product) next context
           }
        // Read
@@ -36,7 +36,7 @@ module ProductHttp =
             let save = context.GetService<ProductSave>()
             let! product = context.BindJsonAsync<Product>()
             // let product = { product with Id = id }
-            let product = { product with _id = BsonObjectId(ObjectId.GenerateNewId()) }
+            let product = { product with _id = ObjectId.GenerateNewId().ToString() }
             return! json (save product) next context
           })
       // Delete

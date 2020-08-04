@@ -1,11 +1,10 @@
 namespace Product
 
-open MongoDB.Bson
 
 [<CLIMutable>]
 type Product =
   { 
-    _id: BsonObjectId
+    _id: string
     code: string
     url: string
     creator: string
