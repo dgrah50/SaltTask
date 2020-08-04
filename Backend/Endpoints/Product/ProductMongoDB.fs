@@ -2,7 +2,6 @@ module Product.ProductMongoDB
 
 open Product
 open MongoDB.Driver
-open MongoDB.Bson
 open Microsoft.Extensions.DependencyInjection
 
 let find (collection : IMongoCollection<Product>) (criteria : ProductCriteria) : Product[] =

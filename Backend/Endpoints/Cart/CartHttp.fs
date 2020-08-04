@@ -6,7 +6,6 @@ open Cart
 open Product
 open FSharp.Control.Tasks.V2
 open System 
-open MongoDB.Bson
 
 module CartHttp =
   let handlers : HttpFunc -> HttpContext -> HttpFuncResult =
@@ -32,18 +31,13 @@ module CartHttp =
           json carts next context
       // Update 
       //  TODO: Update to fix submit with ID issue 
-      PUT >=> route "/cart" >=>
-        fun next context ->
+
+      PUT >=> routef "/cart/%s" (fun id next context ->
           task {
             let save = context.GetService<CartSave>()
-            let! product = context.BindJsonAsync<Product>()
-            let cartitem = { 
-              _id = product._id.ToString();
-              cartquantity = 1;
-              product = product;
-             }
+            let! cartitem = context.BindJsonAsync<CartItem>()
             return! json (save cartitem) next context
-          }
+          })
        // Read
       // Delete
       DELETE >=> routef "/cart/%s" (fun id ->
