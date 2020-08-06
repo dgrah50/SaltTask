@@ -1,10 +1,11 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
+import "antd/dist/antd.css"; 
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-
 import HomePage from "./pages/Home/index.js";
 import CartPage from "./pages/Cart/index.js";
+import { Input } from "antd";
+const { Search } = Input;
 
 function App() {
   return (
@@ -28,22 +29,33 @@ function NavBar() {
   const barStyle = {
     display: "flex",
     flexDirection: "row",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    paddingTop: 10,
+    paddingBottom: 10,
+    paddingLeft: "5%",
+    paddingRight: "5%",
     alignItems: "center",
-    backgroundColor: "blue",
-    flex: 1,
-    width: "100%",
+    backgroundColor: "#131921",
+    height: 100
+  };
+  const linkStyle = {
+    color: "white",
   };
   return (
     <div style={barStyle}>
-      <ul>
-        <li>
-          <Link to="/home">Home Page</Link>
-        </li>
-        <li>
-          <Link to="/cart">Cart Page</Link>
-        </li>
-      </ul>
+      <Link to="/home">
+        <h1 style={linkStyle}>Home</h1>
+      </Link>
+      <Search
+        placeholder="Search for an item"
+        enterButton="Search"
+        size="large"
+        style={{width:"40%"}}
+        onSearch={(value) => console.log(value)}
+      />
+      <Link to="/cart">
+        <h1 style={linkStyle}>Cart</h1>
+      </Link>
     </div>
   );
 }

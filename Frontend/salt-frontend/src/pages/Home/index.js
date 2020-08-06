@@ -1,11 +1,11 @@
 //Dependencies
 import React, { Component } from "react";
 import axios from "axios";
+import ProductCard from "../../components/productCard.js"
 
 class HomePage extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       products: [],
     };
@@ -33,8 +33,7 @@ class HomePage extends Component {
         >
           <h1>All Items</h1>
         </div>
-
-        {this.state.products.map((product, idx) => productCard(product, idx))}
+        {this.state.products.map((product, idx) => ProductCard(product, idx))}
       </div>
     );
   }
@@ -47,41 +46,6 @@ const containerStyle = {
   flexDirection: "row",
   flexWrap: "wrap",
   flex: 4,
-};
-
-const productCard = (product, idx) => {
-
-  const BORDER_RADIUS = 10
-  const wrapperStyle = {
-    width: "20%",
-    padding: 20,
-  };
-  const cardStyle = {
-    backgroundColor: "#FF",
-    flexGrow: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    borderRadius: BORDER_RADIUS,
-    boxShadow:
-      "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-  };
-  const imageStyle = {
-    borderTopLeftRadius: BORDER_RADIUS,
-    borderTopRightRadius: BORDER_RADIUS,
-    width: "100%",
-    height: 200,
-    objectFit: "cover",
-  };
-  return (
-    <div style={wrapperStyle} key={idx}>
-      <div style={cardStyle} key={idx}>
-        <img src={product.image_url} style={imageStyle} />
-        <h3>{product.product_name}</h3>
-      </div>
-    </div>
-  );
 };
 
 export default HomePage;
