@@ -6,11 +6,16 @@ open Product
 open FSharp.Control.Tasks.V2
 open System
 
+
 module ProductHttp =
+    let cors  : HttpHandler =
+        setHttpHeader "Access-Control-Allow-Origin" "*"
+        >=> setHttpHeader "Access-Control-Allow-Credentials" "true"
+
     let handlers: HttpFunc -> HttpContext -> HttpFuncResult =
         choose
             [ POST
-              >=> route "/products"
+              >=> route "/products" >=> cors
               >=> fun next context ->
                   task {
                       let save = context.GetService<ProductSave>()
@@ -19,7 +24,7 @@ module ProductHttp =
                   }
               // Read
               GET
-              >=> route "/products"
+              >=> route "/products" >=> cors
               >=> fun next context ->
                   task {
                       let find = context.GetService<ProductFind>()

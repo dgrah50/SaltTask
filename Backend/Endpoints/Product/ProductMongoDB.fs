@@ -4,6 +4,7 @@ open Product
 open MongoDB.Driver
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.FSharp.Linq
+open Microsoft.FSharp.Reflection
 
 
 let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Product [] =
@@ -13,6 +14,7 @@ let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Pr
         match criteria.page with
         | 1 -> System.Nullable<int>(0)
         | int -> System.Nullable<int>(20 * criteria.page - 20)
+
 
     match (criteria.field, criteria.query) with
     | (null, _) ->
@@ -27,9 +29,11 @@ let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Pr
     // Is  there a  cleaner way to do this like template literals in JS ?
     // Violates "Do Not Repeat Yourself"
     // Ideally would do something like x.[field].Contains(matchstring)
+    // This would require the utilisation of a map type.
+
+
     | (field, matchstring) ->
-        printfn "%A" pagesize
-        printfn "%A" skipindex
+
         match field with
         | "_id" ->
             collection.Find(fun x -> x._id.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()

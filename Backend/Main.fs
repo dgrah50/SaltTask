@@ -6,6 +6,8 @@ open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.Extensions.DependencyInjection
 open Microsoft.Extensions.Logging
+open Microsoft.AspNetCore.Cors.Infrastructure
+open Microsoft.AspNetCore.Hosting
 open Giraffe
 open Product
 open Product.Http
@@ -24,15 +26,25 @@ let errorHandler (ex : Exception) (logger : ILogger) =
     logger.LogError(EventId(), ex, "An unhandled exception occurred while executing the request.")
     clearResponse >=> setStatusCode 500 >=> text ex.Message
 
+let configureCors (builder : CorsPolicyBuilder) =
+    builder.WithOrigins("http://localhost:3000")
+           .AllowAnyMethod()
+           .AllowAnyHeader()
+           |> ignore
+
 let configureApp (app : IApplicationBuilder) =
   app.UseGiraffeErrorHandler errorHandler  |> ignore
   app.UseStaticFiles() |> ignore
+  app.UseCors(configureCors) |> ignore
   app.UseGiraffe routes
+
+
 
 let configureServices (services : IServiceCollection) =
   // Connect to database, ensure that the mongoDB URL has been exported as an environment variable
   let mongo = MongoClient (Environment.GetEnvironmentVariable "MONGO_URL")
   let db = mongo.GetDatabase "products"
+
 
   // These next 3 lines are required to ignore the extra product fields 
   // that are not loaded from the database into the defined Product type
@@ -42,6 +54,7 @@ let configureServices (services : IServiceCollection) =
 
   // Configure the services to share the products and cart databases as a single source of truth
   services.AddGiraffe() |> ignore
+  services.AddCors() |> ignore
   services.AddProductMongoDB(db.GetCollection<Product>("products")) |> ignore
   services.AddCartMongoDB(db.GetCollection<CartItem>("cart")) |> ignore
   
