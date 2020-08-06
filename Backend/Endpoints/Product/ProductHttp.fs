@@ -8,41 +8,47 @@ open System
 
 
 module ProductHttp =
-    let cors  : HttpHandler =
-        setHttpHeader "Access-Control-Allow-Origin" "*"
-        >=> setHttpHeader "Access-Control-Allow-Credentials" "true"
+
 
     let handlers: HttpFunc -> HttpContext -> HttpFuncResult =
-        choose
-            [ POST
-              >=> route "/products" >=> cors
-              >=> fun next context ->
-                  task {
-                      let save = context.GetService<ProductSave>()
-                      let! product = context.BindJsonAsync<Product>()
-                      return! json (save product) next context
-                  }
-              // Read
-              GET
-              >=> route "/products" >=> cors
-              >=> fun next context ->
-                  task {
-                      let find = context.GetService<ProductFind>()
-                      let! query = context.BindJsonAsync<ProductCriteria>()
-                      let products = find query
-                      return! json products next context
-                  }
+        choose [ POST
+                 >=> route "/products"
+                 >=> fun next context ->
+                         task {
+                             try
+                                 let save = context.GetService<ProductSave>()
+                                 let! product = context.BindJsonAsync<Product>()
+                                 return! json (save product) next context
+                             with e ->
+                                return! json null next context
+                         }
+                 // Read
+                 GET
+                 >=> route "/products"
+                 >=> fun next context ->
+                         task {
+                             try
+                                 let find = context.GetService<ProductFind>()
+                                 let! query = context.BindJsonAsync<ProductCriteria>()
+                                 let products = find query
+                                 return! json products next context
+                             with e ->
+                                return! json [] next context
+                         }
 
-              // Update
-              PUT
-              >=> routef "/products/%s" (fun id next context ->
-                      task {
-                          let save = context.GetService<ProductSave>()
-                          let! product = context.BindJsonAsync<Product>()
-                          return! json (save product) next context
-                      })
-              // Delete
-              DELETE
-              >=> routef "/products/%s" (fun id next context ->
-                      let delete = context.GetService<ProductDelete>()
-                      json (delete id) next context) ]
+                 // Update
+                 PUT
+                 >=> routef "/products/%s" (fun id next context ->
+                         task {
+                             try
+                                 let save = context.GetService<ProductSave>()
+                                 let! product = context.BindJsonAsync<Product>()
+                                 return! json (save product) next context
+                             with e ->
+                                return! json null next context
+                         })
+                 // Delete
+                 DELETE
+                 >=> routef "/products/%s" (fun id next context ->
+                         let delete = context.GetService<ProductDelete>()
+                         json (delete id) next context) ]
