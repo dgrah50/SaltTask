@@ -14,14 +14,16 @@ module CartHttp =
               >=> route "/cart"
               >=> fun next context ->
                   task {
-                      let save = context.GetService<CartSave>()
-                      let! product = context.BindJsonAsync<Product>()
-                      let cartitem =
-                          { _id = product._id.ToString()
-                            cartquantity = 1
-                            product = product }
-
-                      return! json (save cartitem) next context
+                      try
+                          let save = context.GetService<CartSave>()
+                          let! product = context.BindJsonAsync<Product>()
+                          let cartitem =
+                              { _id = product._id.ToString()
+                                cartquantity = 1
+                                product = product }
+                          return! json (save cartitem) next context
+                      with e -> 
+                        return! json [] next context
                   }
               // Read
               GET
@@ -34,10 +36,12 @@ module CartHttp =
               PUT
               >=> routef "/cart/%s" (fun id next context ->
                       task {
-                          let save = context.GetService<CartSave>()
-                          let! cartitem = context.BindJsonAsync<CartItem>()
-                          
-                          return! json (save cartitem) next context
+                          try
+                              let save = context.GetService<CartSave>()
+                              let! cartitem = context.BindJsonAsync<CartItem>()
+                              return! json (save cartitem) next context
+                          with e ->
+                            return! json null next context
                       })
               // Delete
               DELETE
