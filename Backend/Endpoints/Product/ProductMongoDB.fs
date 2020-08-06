@@ -13,7 +13,8 @@ let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Pr
     let skipindex =
         match criteria.page with
         | 1 -> System.Nullable<int>(0)
-        | int -> System.Nullable<int>(20 * criteria.page - 20)
+        | int when criteria.page > 1 -> System.Nullable<int>(20 * criteria.page - 20)
+        | _ -> System.Nullable<int>(0)
 
 
     match (criteria.field, criteria.query) with
@@ -38,22 +39,6 @@ let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Pr
         | "_id" ->
             collection.Find(fun x -> x._id.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
-        | "code" ->
-            collection.Find(fun x -> x.code.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
-            |> Seq.toArray
-        | "url" ->
-            collection.Find(fun x -> x.url.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
-            |> Seq.toArray
-        | "creator" ->
-            collection.Find(fun x -> x.creator.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
-            |> Seq.toArray
-        | "created_t" ->
-            collection.Find(fun x -> x.created_t.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
-            |> Seq.toArray
-        | "last_modified_t" ->
-            collection.Find(fun x -> x.last_modified_t.Contains(matchstring)).Skip(skipindex).Limit(pagesize)
-                      .ToEnumerable()
-            |> Seq.toArray
         | "product_name" ->
             collection.Find(fun x -> x.product_name.Contains(matchstring)).Skip(skipindex).Limit(pagesize)
                       .ToEnumerable()
@@ -62,8 +47,11 @@ let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Pr
             collection.Find(fun x -> x.generic_name.Contains(matchstring)).Skip(skipindex).Limit(pagesize)
                       .ToEnumerable()
             |> Seq.toArray
-        | "quantity" ->
-            collection.Find(fun x -> x.quantity.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
+        | "creator" ->
+            collection.Find(fun x -> x.creator.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
+            |> Seq.toArray
+        | "ingredients_text" ->
+            collection.Find(fun x -> x.ingredients_text.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
         | _ ->
             collection.Find(Builders.Filter.Empty).Skip(skipindex).Limit(pagesize).ToEnumerable()
@@ -81,7 +69,7 @@ let save (collection: IMongoCollection<Product>) (product: Product): Product =
             Builders<Product>.Filter.Eq((fun x -> x._id), product._id)
 
         let update =
-            Builders<Product>.Update.Set((fun x -> x.code), product.code)
+            Builders<Product>.Update.Set((fun x -> x.creator), product.creator)
                 .Set((fun x -> x.product_name), product.product_name)
 
         collection.UpdateOne(filter, update) |> ignore

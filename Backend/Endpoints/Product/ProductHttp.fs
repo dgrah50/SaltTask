@@ -15,12 +15,17 @@ module ProductHttp =
                  >=> route "/products"
                  >=> fun next context ->
                          task {
-                             try
-                                 let save = context.GetService<ProductSave>()
-                                 let! product = context.BindJsonAsync<Product>()
-                                 return! json (save product) next context
-                             with e ->
-                                return! json null next context
+                             let save = context.GetService<ProductSave>()
+                             let! product = context.BindJsonAsync<Product>()
+                             return! json (save product) next context
+                            //  try
+                            //      let save = context.GetService<ProductSave>()
+                            //      let! product = context.BindJsonAsync<Product>()
+                            //      return! json (save product) next context
+                            //  with e ->
+                            //     let save = context.GetService<ProductSave>()
+                            //     let temp = {_id = 1}
+                            //     return! json (save null) next context
                          }
                  // Read
                  GET
@@ -33,7 +38,10 @@ module ProductHttp =
                                  let products = find query
                                  return! json products next context
                              with e ->
-                                return! json [] next context
+                                let find = context.GetService<ProductFind>()
+                                let query = { page= 1; query="";field=""}
+                                let products = find query
+                                return! json products  next context
                          }
 
                  // Update
