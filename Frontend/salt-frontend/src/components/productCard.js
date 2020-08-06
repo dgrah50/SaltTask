@@ -1,13 +1,23 @@
 import React from "react";
+import { Card } from "antd";
+import { EllipsisOutlined, ShoppingCartOutlined } from "@ant-design/icons";
 
+const { Meta } = Card;
 const ProductCard = (product, idx) => {
+  let cardImage = product.image_url ? product.image_url :"https://fomantic-ui.com/images/wireframe/image.png";
   return (
-    <div style={wrapperStyle} key={idx}>
-      <div style={cardStyle} key={idx}>
-        <img src={product.image_url} style={imageStyle} />
-        <h3 style={captionStyle}>{product.product_name}</h3>
-      </div>
-    </div>
+    <Card
+      key={idx}
+      hoverable
+      style={{ width: "20%", margin: 10 }}
+      cover={<img alt="example" src={cardImage} style={imageStyle} />}
+      actions={[
+        <EllipsisOutlined key="setting" />,
+        <ShoppingCartOutlined key="shopping" />,
+      ]}
+    >
+      <Meta title={product.product_name} description="www.instagram.com" />
+    </Card>
   );
 };
 

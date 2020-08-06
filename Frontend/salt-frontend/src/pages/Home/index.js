@@ -1,7 +1,6 @@
 //Dependencies
 import React, { Component } from "react";
-import axios from "axios";
-import ProductCard from "../../components/productCard.js"
+import ProductCard from "../../components/productCard.js";
 
 class HomePage extends Component {
   constructor(props) {
@@ -28,12 +27,12 @@ class HomePage extends Component {
   render() {
     return (
       <div style={containerStyle}>
-        <div
-          style={{ width: "100%", display: "flex", justifyContent: "center" }}
-        >
+        <div style={headerWrapperStyle}>
           <h1>All Items</h1>
         </div>
-        {this.state.products.map((product, idx) => ProductCard(product, idx))}
+        <div style={productWrapperStyle}>
+          {this.state.products.map((product, idx) => ProductCard(product, idx))}
+        </div>
       </div>
     );
   }
@@ -42,10 +41,25 @@ class HomePage extends Component {
 const containerStyle = {
   width: "100%",
   display: "flex",
+  flexDirection: "column",
+  backgroundColor: "##eeeeee",
+  flex: 4,
+};
+
+const headerWrapperStyle = {
+  width: "100%",
+  display: "flex",
   justifyContent: "center",
+};
+
+const productWrapperStyle = {
+  paddingLeft: "10%",
+  paddingRight: "10%",
+  width: "100%",
+  display: "flex",
   flexDirection: "row",
   flexWrap: "wrap",
-  flex: 4,
+  justifyContent: "center",
 };
 
 export default HomePage;
