@@ -3,14 +3,23 @@ module Product.ProductMongoDB
 open Product
 open MongoDB.Driver
 open Microsoft.Extensions.DependencyInjection
+open Microsoft.FSharp.Linq
+
 
 let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Product [] =
+    let pagesize = System.Nullable<int> 20
+
+    let skipindex =
+        match criteria.page with
+        | 1 -> System.Nullable<int>(0)
+        | int -> System.Nullable<int>(20 * criteria.page - 20)
+
     match (criteria.field, criteria.query) with
     | (null, _) ->
-        collection.Find(Builders.Filter.Empty).ToEnumerable()
+        collection.Find(Builders.Filter.Empty).Skip(skipindex).Limit(pagesize).ToEnumerable()
         |> Seq.toArray
     | (_, null) ->
-        collection.Find(Builders.Filter.Empty).ToEnumerable()
+        collection.Find(Builders.Filter.Empty).Skip(skipindex).Limit(pagesize).ToEnumerable()
         |> Seq.toArray
     // field: the field within the MongoDB database to be searched.
     // matchstring: the string to search the field for.
@@ -19,36 +28,41 @@ let find (collection: IMongoCollection<Product>) (criteria: ProductCriteria): Pr
     // Violates "Do Not Repeat Yourself"
     // Ideally would do something like x.[field].Contains(matchstring)
     | (field, matchstring) ->
+        printfn "%A" pagesize
+        printfn "%A" skipindex
         match field with
         | "_id" ->
-            collection.Find(fun x -> x._id.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x._id.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
         | "code" ->
-            collection.Find(fun x -> x.code.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x.code.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
         | "url" ->
-            collection.Find(fun x -> x.url.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x.url.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
         | "creator" ->
-            collection.Find(fun x -> x.creator.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x.creator.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
         | "created_t" ->
-            collection.Find(fun x -> x.created_t.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x.created_t.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
         | "last_modified_t" ->
-            collection.Find(fun x -> x.last_modified_t.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x.last_modified_t.Contains(matchstring)).Skip(skipindex).Limit(pagesize)
+                      .ToEnumerable()
             |> Seq.toArray
         | "product_name" ->
-            collection.Find(fun x -> x.product_name.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x.product_name.Contains(matchstring)).Skip(skipindex).Limit(pagesize)
+                      .ToEnumerable()
             |> Seq.toArray
         | "generic_name" ->
-            collection.Find(fun x -> x.generic_name.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x.generic_name.Contains(matchstring)).Skip(skipindex).Limit(pagesize)
+                      .ToEnumerable()
             |> Seq.toArray
         | "quantity" ->
-            collection.Find(fun x -> x.quantity.Contains(matchstring)).ToEnumerable()
+            collection.Find(fun x -> x.quantity.Contains(matchstring)).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
         | _ ->
-            collection.Find(Builders.Filter.Empty).ToEnumerable()
+            collection.Find(Builders.Filter.Empty).Skip(skipindex).Limit(pagesize).ToEnumerable()
             |> Seq.toArray
 
 let save (collection: IMongoCollection<Product>) (product: Product): Product =
