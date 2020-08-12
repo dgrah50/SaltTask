@@ -10,18 +10,18 @@ class ProductPage extends Component {
       product: null,
     };
   }
+  // When the page loads get the item with the specific ID
   componentDidMount() {
     const {
       match: { params },
     } = this.props;
-    this.setState({ query: params.id });
-    console.log(params.id);
     this.fetchProducts(params.id);
   }
 
   fetchProducts = (id) => {
+    // query the _id field with the given ID
     let data = {
-      page: this.state.currentPage,
+      page: 1,
       field: "_id",
       query: id,
     };
@@ -44,6 +44,7 @@ class ProductPage extends Component {
       });
   };
 
+  // Render a table of the product properties
   renderTable = () => {
     return (
       <div>
@@ -91,6 +92,7 @@ class ProductPage extends Component {
   }
 }
 
+// Styles
 const detailWrapperStyle = {
   width: "100%",
   display: "flex",
@@ -120,17 +122,6 @@ const headerWrapperStyle = {
   width: "100%",
   display: "flex",
   justifyContent: "center",
-};
-
-const productWrapperStyle = {
-  paddingLeft: "10%",
-  paddingRight: "10%",
-  width: "100%",
-  display: "flex",
-  flexDirection: "row",
-  flexWrap: "wrap",
-  justifyContent: "center",
-  backgroundColor: "red",
 };
 
 export default ProductPage;

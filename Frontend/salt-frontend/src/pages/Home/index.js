@@ -16,6 +16,8 @@ class HomePage extends Component {
     this.fetchProducts();
   }
 
+  // Fetch the product directory and populate state
+  // Allows pagination by calling with this.state.currentPage
   fetchProducts = () => {
     let data = { page: this.state.currentPage };
     let config = {
@@ -61,6 +63,7 @@ class HomePage extends Component {
   }
 }
 
+// Styles
 const containerStyle = {
   width: "100%",
   display: "flex",

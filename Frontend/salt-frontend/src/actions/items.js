@@ -1,3 +1,4 @@
+// redux actions
 export function itemsHasErrored(bool) {
   return {
     type: "ITEMS_HAS_ERRORED",
@@ -28,7 +29,6 @@ export function itemsFetchData(url) {
         if (!response.ok) {
           throw Error(response.statusText);
         }
-
         dispatch(itemsIsLoading(false));
 
         return response;

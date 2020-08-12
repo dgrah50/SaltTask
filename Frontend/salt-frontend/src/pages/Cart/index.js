@@ -11,6 +11,7 @@ class CartPage extends Component {
       cart: [],
     };
   }
+  // Fetch data from API and fill redux store
   componentDidMount() {
     this.props.fetchData("http://localhost:5000/cart");
   }
@@ -37,6 +38,7 @@ class CartPage extends Component {
   }
 }
 
+// Redux helper functions
 const mapStateToProps = (state) => {
   return {
     items: state.items,
@@ -51,10 +53,9 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-const EmptyState = () => {
-  return <h3>Add something to your cart!</h3>;
-};
+export default connect(mapStateToProps, mapDispatchToProps)(CartPage);
 
+// Styles
 const containerStyle = {
   width: "100%",
   display: "flex",
@@ -73,5 +74,3 @@ const productWrapperStyle = {
   flexWrap: "wrap",
   justifyContent: "center",
 };
-
-export default connect(mapStateToProps, mapDispatchToProps)(CartPage);

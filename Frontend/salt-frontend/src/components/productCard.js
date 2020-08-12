@@ -5,7 +5,7 @@ import {
   ShoppingCartOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { itemsFetchData } from "../actions/items";
 import axios from "axios";
@@ -20,6 +20,7 @@ const ProductCard = (props) => {
     ? product.image_url
     : "https://fomantic-ui.com/images/wireframe/image.png";
 
+  // add a specific item to the cart by calling the API
   const addToCart = (product) => {
     const cartItem = {
       _id: product._id,
@@ -46,6 +47,7 @@ const ProductCard = (props) => {
       });
   };
 
+  // delete a specific item to the cart by calling the API
   const deleteFromCart = (product) => {
     var config = {
       method: "delete",
@@ -67,9 +69,11 @@ const ProductCard = (props) => {
       });
   };
 
+  // open up a product page to get specific details
   const openItemDetail = (product) => {
     history.push(`/product/${product._id}`);
   };
+
   // If on the cart page then we wish to have a delete button
   let actions = [
     <EllipsisOutlined key="expand" onClick={() => openItemDetail(product)} />,
@@ -85,7 +89,11 @@ const ProductCard = (props) => {
     <Card
       key={idx}
       hoverable
-      style={{ width: width, margin: 10, maxHeight: 400 }}
+      style={{
+        width: width,
+        margin: 10,
+        maxHeight: 400,
+      }}
       cover={<img alt="example" src={cardImage} style={imageStyle} />}
       actions={actions}
     >
@@ -94,15 +102,7 @@ const ProductCard = (props) => {
   );
 };
 
-const BORDER_RADIUS = 10;
-const imageStyle = {
-  borderTopLeftRadius: BORDER_RADIUS,
-  borderTopRightRadius: BORDER_RADIUS,
-  width: "100%",
-  height: 200,
-  objectFit: "cover",
-};
-
+// Redux helper functions
 const mapStateToProps = (state) => {
   return {
     items: state.items,
@@ -118,3 +118,14 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProductCard);
+
+// Styles
+
+const BORDER_RADIUS = 10;
+const imageStyle = {
+  borderTopLeftRadius: BORDER_RADIUS,
+  borderTopRightRadius: BORDER_RADIUS,
+  width: "100%",
+  height: 200,
+  objectFit: "cover",
+};

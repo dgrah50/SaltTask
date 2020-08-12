@@ -7,10 +7,11 @@ import { Input } from "antd";
 const { Search } = Input;
 
 function NavBar(props) {
+  // fetch cart data from the API in order to tell how many items are in the cart
+  // e.g cart (2)
   useEffect(() => {
     props.fetchData("http://localhost:5000/cart");
   }, []);
-
   const counter = useSelector((state) => state.items).length;
   const history = useHistory();
 
@@ -33,10 +34,12 @@ function NavBar(props) {
   );
 }
 
+// When the search button is pushed, go to the results screen
 const searchForItem = (value, history) => {
   history.push(`/results/${value}`);
 };
 
+// Redux helper functions
 const mapStateToProps = (state) => {
   return {
     items: state.items,
@@ -53,6 +56,7 @@ const mapDispatchToProps = (dispatch) => {
 
 export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
 
+// Styles
 const barStyle = {
   display: "flex",
   flexDirection: "row",

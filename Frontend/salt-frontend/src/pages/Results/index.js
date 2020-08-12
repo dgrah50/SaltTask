@@ -12,8 +12,9 @@ class ResultsPage extends Component {
       currentPage: 1,
       query: "",
     };
-    console.log(props);
   }
+
+  // When the page loads, destructure the paramaters and then fetch the relevant products from the API
   componentDidMount() {
     const {
       match: { params },
@@ -23,6 +24,7 @@ class ResultsPage extends Component {
     });
   }
 
+  // Fetch products with the given product name
   fetchProducts = (query) => {
     let data = {
       page: this.state.currentPage,
@@ -72,6 +74,7 @@ class ResultsPage extends Component {
   }
 }
 
+// Styles
 const containerStyle = {
   width: "100%",
   display: "flex",
