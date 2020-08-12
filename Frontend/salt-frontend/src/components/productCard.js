@@ -1,10 +1,14 @@
 import React from "react";
 import { Card } from "antd";
 import { EllipsisOutlined, ShoppingCartOutlined } from "@ant-design/icons";
-
 const { Meta } = Card;
-const ProductCard = (product, idx) => {
-  let cardImage = product.image_url ? product.image_url :"https://fomantic-ui.com/images/wireframe/image.png";
+
+const ProductCard = (product, idx, cart = false) => {
+  let cardImage = product.image_url
+    ? product.image_url
+    : "https://fomantic-ui.com/images/wireframe/image.png";
+
+  console.log(product);
   return (
     <Card
       key={idx}
@@ -22,7 +26,6 @@ const ProductCard = (product, idx) => {
 };
 
 const BORDER_RADIUS = 10;
-
 const imageStyle = {
   borderTopLeftRadius: BORDER_RADIUS,
   borderTopRightRadius: BORDER_RADIUS,

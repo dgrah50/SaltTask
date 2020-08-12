@@ -4,20 +4,31 @@ import ProductCard from "../../components/productCard.js";
 import { Pagination } from "antd";
 import axios from "axios";
 
-class HomePage extends Component {
+class ResultsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
       products: [],
       currentPage: 1,
+      query: "",
     };
+    console.log(props);
   }
   componentDidMount() {
-    this.fetchProducts();
+    const {
+      match: { params },
+    } = this.props;
+    this.setState({ query: params.query }, () => {
+      this.fetchProducts(this.state.query);
+    });
   }
 
-  fetchProducts = () => {
-    let data = { page: this.state.currentPage };
+  fetchProducts = (query) => {
+    let data = {
+      page: this.state.currentPage,
+      field: "product_name",
+      query: query,
+    };
     let config = {
       method: "post",
       url: "http://localhost:5000/products",
@@ -40,7 +51,7 @@ class HomePage extends Component {
     return (
       <div style={containerStyle}>
         <div style={headerWrapperStyle}>
-          <h1>All Items</h1>
+          <h1>Search Results</h1>
         </div>
         <div style={productWrapperStyle}>
           {this.state.products.map((product, idx) => ProductCard(product, idx))}
@@ -50,7 +61,9 @@ class HomePage extends Component {
             defaultCurrent={1}
             total={50}
             onChange={(page, pageSize) => {
-              this.setState({ currentPage: page }, () => this.fetchProducts());
+              this.setState({ currentPage: page }, () =>
+                this.fetchProducts(this.state.query)
+              );
             }}
           />
         </div>
@@ -92,4 +105,4 @@ const paginationWrapperStyle = {
   paddingBottom: 30,
 };
 
-export default HomePage;
+export default ResultsPage;
