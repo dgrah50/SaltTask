@@ -5,17 +5,17 @@ import {
   ShoppingCartOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-
+import { Link, useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { itemsFetchData } from "../actions/items";
 import axios from "axios";
 const { Meta } = Card;
 
 const ProductCard = (props) => {
+  const history = useHistory();
+  const { product, idx, width = "20%", cart = false } = props;
+
   // If image is present then load it, else load a placeholder
-
-  const { product, idx, cart = false } = props;
-
   let cardImage = product.image_url
     ? product.image_url
     : "https://fomantic-ui.com/images/wireframe/image.png";
@@ -67,9 +67,12 @@ const ProductCard = (props) => {
       });
   };
 
+  const openItemDetail = (product) => {
+    history.push(`/product/${product._id}`);
+  };
   // If on the cart page then we wish to have a delete button
   let actions = [
-    <EllipsisOutlined key="expand" />,
+    <EllipsisOutlined key="expand" onClick={() => openItemDetail(product)} />,
     <ShoppingCartOutlined key="shopping" onClick={() => addToCart(product)} />,
   ];
   if (cart) {
@@ -82,7 +85,7 @@ const ProductCard = (props) => {
     <Card
       key={idx}
       hoverable
-      style={{ width: "20%", margin: 10, maxHeight: 400 }}
+      style={{ width: width, margin: 10, maxHeight: 400 }}
       cover={<img alt="example" src={cardImage} style={imageStyle} />}
       actions={actions}
     >
