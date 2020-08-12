@@ -8,7 +8,6 @@ const ProductCard = (product, idx, cart = false) => {
     ? product.image_url
     : "https://fomantic-ui.com/images/wireframe/image.png";
 
-  console.log(product);
   return (
     <Card
       key={idx}

@@ -1,11 +1,18 @@
-import React from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
+import { connect } from "react-redux";
+import { useSelector } from "react-redux";
+import { itemsFetchData } from "../actions/items";
 import { Input } from "antd";
 const { Search } = Input;
 
-function NavBar() {
+function NavBar(props) {
+  useEffect(() => {
+    props.fetchData("http://localhost:5000/cart");
+  }, []);
+  const counter = useSelector((state) => state.items).length;
   const history = useHistory();
+
   return (
     <div style={barStyle}>
       <Link to="/">
@@ -19,7 +26,7 @@ function NavBar() {
         onSearch={(value) => searchForItem(value, history)}
       />
       <Link to="/cart">
-        <h1 style={linkStyle}>Cart</h1>
+        <h1 style={linkStyle}>Cart ({counter})</h1>
       </Link>
     </div>
   );
@@ -29,7 +36,21 @@ const searchForItem = (value, history) => {
   history.push(`/results/${value}`);
 };
 
-export default NavBar;
+const mapStateToProps = (state) => {
+  return {
+    items: state.items,
+    hasErrored: state.itemsHasErrored,
+    isLoading: state.itemsIsLoading,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchData: (url) => dispatch(itemsFetchData(url)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
 
 const barStyle = {
   display: "flex",
