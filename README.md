@@ -1,7 +1,7 @@
 # Salt eCommerce Task
 
 This is a task for Salt in which a basic clone of an ecommerce website has been made. One can view products and add/remove them from the cart. One can search for products by name.
-![Salt eCommerce Preview](https://ibb.co/5R3Q648)
+![Salt eCommerce Preview](https://i.ibb.co/71D3XCW/Screenshot-2020-08-12-at-18-45-45.png)
 
 ---
 
