@@ -28,9 +28,9 @@ class CartPage extends Component {
       <div style={containerStyle}>
         <h1>Shopping Basket</h1>
         <div style={productWrapperStyle}>
-          {this.props.items.map((product, idx) =>
-            ProductCard(product.product, idx, true)
-          )}
+          {this.props.items.map((product, idx) => (
+            <ProductCard product={product.product} key={idx} cart={true} />
+          ))}
         </div>
       </div>
     );

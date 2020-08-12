@@ -43,7 +43,9 @@ class HomePage extends Component {
           <h1>All Items</h1>
         </div>
         <div style={productWrapperStyle}>
-          {this.state.products.map((product, idx) => ProductCard(product, idx))}
+          {this.state.products.map((product, idx) => (
+            <ProductCard product={product} key={idx} />
+          ))}
         </div>
         <div style={paginationWrapperStyle}>
           <Pagination

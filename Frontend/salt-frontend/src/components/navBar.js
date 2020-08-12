@@ -10,6 +10,7 @@ function NavBar(props) {
   useEffect(() => {
     props.fetchData("http://localhost:5000/cart");
   }, []);
+
   const counter = useSelector((state) => state.items).length;
   const history = useHistory();
 
